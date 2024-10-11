@@ -41,16 +41,37 @@ function toXml(products) {
   return `<?xml version="1.0" encoding="UTF-8"?>\n${content}`;
 }
 
-app.get("/products.json", (req, res) => {
+function listProducts(req) {
   const quantity = parseInt(req.query.quantity || 200);
-  const products = randomProducts(quantity);
+  const fill = parseFloat(req.query.fill || 1);
 
-  res.json(products);
+  return randomProducts(quantity, fill);
+}
+
+function chaotic(req, res, next) {
+  const chaotic = req.query.chaotic === "true";
+
+  if (!chaotic) {
+    return next();
+  }
+
+  const coin = Math.random();
+
+  if (coin > 0.4) {
+    return res.status(500).send("Internal Server Error");
+  }
+
+  next();
+}
+
+app.use(chaotic);
+
+app.get("/products.json", (req, res) => {
+  res.json(listProducts(req));
 });
 
 app.get("/products.xml", (req, res) => {
-  const quantity = parseInt(req.query.quantity || 200);
-  const products = randomProducts(quantity);
+  const products = listProducts(req);
 
   res.set("Content-Type", "application/xml");
   res.send(toXml(products));
