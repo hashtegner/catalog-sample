@@ -66,6 +66,12 @@ function chaotic(req, res, next) {
 
 app.use(chaotic);
 
+app.get("/", (req, res) => {
+  res.redirect(
+    "https://github.com/hashtegner/chaotic-catalog/tree/main?tab=readme-ov-file#usage"
+  );
+});
+
 app.get("/products.json", (req, res) => {
   res.json(listProducts(req));
 });
