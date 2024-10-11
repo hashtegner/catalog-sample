@@ -42,10 +42,10 @@ function toXml(products) {
 }
 
 function listProducts(req) {
-  const quantity = parseInt(req.query.quantity || 200);
+  const limit = parseInt(req.query.limit || 200);
   const fill = parseFloat(req.query.fill || 1);
 
-  return randomProducts(quantity, fill);
+  return randomProducts(limit, fill);
 }
 
 function chaotic(req, res, next) {
