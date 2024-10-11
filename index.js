@@ -36,7 +36,9 @@ function toXml(products) {
     return { Product: productData };
   });
 
-  return xml({ Products: list }, true);
+  const content = xml({ Products: list }, true);
+
+  return `<?xml version="1.0" encoding="UTF-8"?>\n${content}`;
 }
 
 app.get("/products.json", (req, res) => {
